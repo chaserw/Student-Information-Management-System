@@ -1,0 +1,53 @@
+﻿DROP TABLE 管理员;
+CREATE TABLE 管理员(
+	ID VARCHAR(12) PRIMARY KEY,
+	password VARCHAR(12) NOT NULL
+);
+
+DROP TABLE 学生;
+CREATE TABLE 学生(
+	ID VARCHAR(12) PRIMARY KEY,
+	Sname VARCHAR(20) NOT NULL,
+	Ssex VARCHAR(2) NOT NULL,
+	Sbirth DATE,
+	Stel VARCHAR(15) UNIQUE,
+	Sacademy VARCHAR(20) NOT NULL,
+	Sclass VARCHAR(20) NOT NULL,
+	Saddress VARCHAR(30) NOT NULL,
+	CHECK (Ssex='男' OR Ssex='女'),
+	CHECK (Sacademy='计算机科学与技术学院' OR Sacademy='医学院'),
+	CHECK (Sclass='计科1501班' OR Sclass='计科1502班' OR Sclass='计科1401班' OR Sclass='信安1501班' OR Sclass='临床1501班')
+);
+
+DROP TABLE 教师;
+CREATE TABLE 教师(
+	ID VARCHAR(12) PRIMARY KEY,
+	Tname VARCHAR(20) NOT NULL,
+	Tbirth DATE,
+	Tprotitle VARCHAR(6),
+	Cno VARCHAR(10),
+	CHECK (Tprotitle='教授' OR Tprotitle='副教授' OR Tprotitle='讲师'),
+	FOREIGN KEY(Cno) REFERENCES 课程(Cno)
+);
+
+DROP TABLE 课程;
+CREATE TABLE 课程(
+	Cno VARCHAR(10) PRIMARY KEY,
+	Cname VARCHAR(40) NOT NULL,
+	Ccredit FLOAT(2,1),
+	CHECK (Cname='高等数学(一)' OR Cname='高等数学(二)' OR Cname='大学英语(一)' OR Cname='数据库系统概论')
+);
+
+//高等数学(一)：00256320     高等数学(二)：00256321     大学英语(一)：00256401     数据库系统概论：00256530
+
+DROP TABLE 成绩;
+CREATE TABLE 成绩(
+	Sno VARCHAR(12),
+	Cno VARCHAR(10),
+	Grade SMALLINT(3),
+	Point FLOAT(2,1),
+	PRIMARY KEY(Sno,Cno),
+	FOREIGN KEY(Sno) REFERENCES 学生(ID),
+	FOREIGN KEY(Cno) REFERENCES 课程(Cno)
+);
+
